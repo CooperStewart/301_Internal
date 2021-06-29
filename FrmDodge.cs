@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Reflection;
 
 namespace Dodge_Example
 {
@@ -14,22 +15,26 @@ namespace Dodge_Example
     {
         Graphics g; //declare a graphics object called g
         // declare space for an array of 7 objects called planet 
-        Planet[] planet = new Planet[7];
+        Planet[] planet = new Planet[5];
         Random yspeed = new Random();
+        Random ypos = new Random();
         Spaceship spaceship = new Spaceship();
         Crosshair crosshair = new Crosshair();
 
         bool left, right;
         string move;
-        int score, lives;
+        int score, lives, Wait;
         public FrmDodge()
         {
             InitializeComponent();
-            for (int i = 0; i < 7; i++)
+            for (int i = 0; i < 5; i++)
             {
-                int x = 10 + (i * 75);
+                int x = 10 + (i * 110);
                 planet[i] = new Planet(x);
             }
+
+            typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, PnlGame, new object[] { true });
+
 
 
         }
@@ -39,10 +44,10 @@ namespace Dodge_Example
             //get the graphics used to paint on the panel control
             g = e.Graphics;
             //call the Planet class's DrawPlanet method to draw the image planet1 
-            for (int i = 0; i < 7; i++)
+            for (int i = 0; i < 5; i++)
             {
                 // generate a random number from 5 to 20 and put it in rndmspeed
-                int rndmspeed = yspeed.Next(5, 20);
+                int rndmspeed = yspeed.Next(1, 3)+score/10;
                 planet[i].y += rndmspeed;
 
                 //call the Planet class's drawPlanet method to draw the images
@@ -71,7 +76,7 @@ namespace Dodge_Example
         private void TmrShip_Tick(object sender, EventArgs e)
         {
             Invalidate();
-
+            label5.Text = Wait.ToString();
             if (right) // if right arrow key pressed
             {
                 move = "right";
@@ -127,38 +132,58 @@ namespace Dodge_Example
 
         private void PnlGame_MouseClick(object sender, MouseEventArgs e)
         {
-            for (int i = 0; i < 7; i++)
+                            int rndmypos = ypos.Next(-10, 100);
+
+            for (int i = 0; i < 5; i++)
             {
                 if (crosshair.spaceRec.IntersectsWith(planet[i].planetRec))
                 {
-                    score += 1;//update the score
-                    lblScore.Text = score.ToString();// display score
-                    planet[i].y = 30;
+                    planet[i].planetImage = Properties.Resources.explosion;
+                    score += 1;
+                    lblScore.Text = score.ToString();
+                    planet[i].y = rndmypos;
+                    planet[i].planetImage = Properties.Resources.planet1;
+                    planet[i].height =20;
+                    planet[i].width =20;
+
                 }
             }
         }
 
+        private void TmrWait_Tick(object sender, EventArgs e)
+        {
+            Wait += 1;
+}
+
         private void TmrPlanet_Tick(object sender, EventArgs e)
         {
+            
            // score = 0;
-            for (int i = 0; i < 7; i++)
+            for (int i = 0; i < 5; i++)
             {
                 planet[i].MovePlanet();
-               
+                planet[i].height = planet[i].y;
+                planet[i].width = planet[i].y;
+              
+
                 if (spaceship.spaceRec.IntersectsWith(planet[i].planetRec))
                 {
-                    //reset planet[i] back to top of panel
-                    planet[i].y = 30; // set  y value of planetRec
-                    lives -= 1;// lose a life
-                    txtLives.Text = lives.ToString();// display number of lives
-                    CheckLives();
+                   
+                //reset planet[i] back to top of panel
+                planet[i].y = 30; // set  y value of planetRec
+                lives -= 1;// lose a life
+                txtLives.Text = lives.ToString();// display number of lives
+                CheckLives();
+            
                 }
                 //if a planet reaches the bottom of the Game Area reposition it at the top
                 if (planet[i].y >= PnlGame.Height)
                 {
-                    score += 1;//update the score
                     lblScore.Text = score.ToString();// display score
                     planet[i].y = 30;
+                    planet[i].height = 20;
+                    planet[i].width = 20;
+
 
                 }
                 // score += planet[i].score;// get score from Planet class (in movePlanet method)

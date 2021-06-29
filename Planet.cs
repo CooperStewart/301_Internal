@@ -37,5 +37,9 @@ namespace Dodge_Example
             planetRec.Location = new Point(x, y);
         }
 
+        public void DestroyPlanet()
+        {
+            planetImage = Properties.Resources.explosion;
+        }
     }
 }
