@@ -20,10 +20,10 @@ namespace Dodge_Example
         public Spaceship()
         {
             x = 10;
-            y = 360;
-            width = 40;
-            height = 40;
-            spaceship = Properties.Resources.alien1;
+            y = 330;
+            width = 100;
+            height = 130;
+            spaceship = Properties.Resources.Galvatron;
             spaceRec = new Rectangle(x, y, width, height);
         }
         //methods

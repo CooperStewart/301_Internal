@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ball.cs" />
     <Compile Include="FrmDodge.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -94,6 +95,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\explosion.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Galvatron.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\unnamed.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ball.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

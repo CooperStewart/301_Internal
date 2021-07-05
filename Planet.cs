@@ -19,11 +19,11 @@ namespace Dodge_Example
         public Planet(int spacing)
         {
             x = spacing;
-            y = 10;
-            width = 20;
+            y = -100;
+            width = 40;
             height = 20;
             //planetImage contains the plane1.png image
-            planetImage = Properties.Resources.planet1;
+            planetImage = Properties.Resources.unnamed;
             planetRec = new Rectangle(x, y, width, height);
         }
         // Methods for the Planet class
