@@ -69,6 +69,17 @@ namespace Dodge_Example
             }
 
 
+            if (move == "transform")
+            {
+                spaceship = Properties.Resources.cannon;
+
+            }
+            if (move == "transform2")
+            {
+                spaceship = Properties.Resources.Galvatron;
+
+            }
+
         }
 
     }

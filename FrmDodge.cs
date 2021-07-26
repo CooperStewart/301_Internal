@@ -69,9 +69,19 @@ namespace Dodge_Example
 
         private void FrmDodge_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyData == Keys.Left) { left = true; }
-            if (e.KeyData == Keys.Right) { right = true; }
-            if (e.KeyData == Keys.Space) { transform = true; }
+            if (transform == false)
+            {
+                if (e.KeyData == Keys.Left) { left = true; }
+                if (e.KeyData == Keys.Right) { right = true; }
+            }
+            if (e.KeyData == Keys.Space) if (Wait < 10)
+                {
+                    { transform = true; TmrWait.Enabled = true; }
+                }
+                else
+                {
+                    transform = false; TmrWait.Enabled = false;
+                }
 
         }
 
@@ -79,7 +89,7 @@ namespace Dodge_Example
         {
             if (e.KeyData == Keys.Left) { left = false; }
             if (e.KeyData == Keys.Right) { right = false; }
-            if (e.KeyData == Keys.Space) { transform = false; }
+            if (e.KeyData == Keys.Space) { transform = false; TmrWait.Enabled = false; Wait = 0; }
 
 
         }
@@ -100,6 +110,17 @@ namespace Dodge_Example
             }
             if (transform) // if left arrow key pressed
             {
+               
+                    move = "transform";
+                    spaceship.MoveSpaceship(move);
+                    right = false;
+                    left = false;
+                
+
+            }
+            else
+            {
+                move = "transform2";
                 spaceship.MoveSpaceship(move);
             }
         }
@@ -158,11 +179,37 @@ namespace Dodge_Example
             {
                 if (crosshair.spaceRec.IntersectsWith(planet[i].planetRec))
                 {
-                    score += 1;
-                    lblScore.Text = score.ToString();
-                    planet[i].y = rndmypos;
-                    planet[i].height =20;
-                    planet[i].width =20;
+                    if (transform == false)
+                    {
+                        score += 1;
+                        lblScore.Text = score.ToString();
+                        planet[i].y = rndmypos;
+                        planet[i].height = 20;
+                        planet[i].width = 20;
+                    }
+                    else
+                    {
+                        score += 3;
+                        lblScore.Text = score.ToString();
+                        planet[i].y = rndmypos;
+                        planet[i].height = 20;
+                        planet[i].width = 20;
+                        if (crosshair.spaceRec.IntersectsWith(planet[0].planetRec))
+                        { }
+                        else
+                        {
+                            planet[i - 1].y = rndmypos;
+                            planet[i - 1].height = 20;
+                            planet[i - 1].width = 20;
+                        }
+                        if (crosshair.spaceRec.IntersectsWith(planet[3].planetRec))
+                        { }
+                        else { 
+                            planet[i + 1].y = rndmypos;
+                            planet[i + 1].height = 20;
+                            planet[i + 1].width = 20;
+                        }
+                    }
 
                 }
             }
@@ -171,6 +218,7 @@ namespace Dodge_Example
         private void TmrWait_Tick(object sender, EventArgs e)
         {
             Wait += 1;
+            
 }
 
         private void TmrPlanet_Tick(object sender, EventArgs e)
@@ -221,6 +269,14 @@ namespace Dodge_Example
                 lives -= 1;// lose a life
                 txtLives.Text = lives.ToString();// display number of lives
                 CheckLives();
+
+
+                }
+                if (ball[i].y >= PnlGame.Height)
+                {
+                    //reset planet[i] back to top of panel
+                    ball[i].y = planet[i].y; // set  y value of planetRec
+                   
 
 
                 }
