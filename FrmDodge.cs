@@ -74,13 +74,13 @@ namespace Dodge_Example
                 if (e.KeyData == Keys.Left) { left = true; }
                 if (e.KeyData == Keys.Right) { right = true; }
             }
-            if (e.KeyData == Keys.Space) if (Wait < 10)
+            if (e.KeyData == Keys.Space) if (Wait < 20)
                 {
                     { transform = true; TmrWait.Enabled = true; }
                 }
                 else
                 {
-                    transform = false; TmrWait.Enabled = false;
+                    transform = false; if (Wait < 21) { Wait = 50; }
                 }
 
         }
@@ -89,7 +89,7 @@ namespace Dodge_Example
         {
             if (e.KeyData == Keys.Left) { left = false; }
             if (e.KeyData == Keys.Right) { right = false; }
-            if (e.KeyData == Keys.Space) { transform = false; TmrWait.Enabled = false; Wait = 0; }
+            if (e.KeyData == Keys.Space) { transform = false;  }
 
 
         }
@@ -217,7 +217,14 @@ namespace Dodge_Example
 
         private void TmrWait_Tick(object sender, EventArgs e)
         {
-            Wait += 1;
+            if (transform==true) { Wait += 1; }
+            else
+            {
+                if (Wait > 0)
+                {
+                    Wait -= 1;
+                }
+            }
             
 }
 
