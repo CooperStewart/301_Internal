@@ -22,9 +22,9 @@ namespace Dodge_Example
         Spaceship spaceship = new Spaceship();
         Crosshair crosshair = new Crosshair();
 
-        bool left, right, transform;
+        bool left, right, transform, cooldown;
         string move;
-        int score, lives, Wait;
+        int score, lives, Wait, Cooldown;
         public FrmDodge()
         {
             InitializeComponent();
@@ -74,13 +74,16 @@ namespace Dodge_Example
                 if (e.KeyData == Keys.Left) { left = true; }
                 if (e.KeyData == Keys.Right) { right = true; }
             }
-            if (e.KeyData == Keys.Space) if (Wait < 20)
+            if (e.KeyData == Keys.Space) if (Wait<20)
                 {
-                    { transform = true; TmrWait.Enabled = true; }
+                    if (cooldown == false)
+                    {
+                        { transform = true; TmrWait.Enabled = true; }
+                    }
                 }
                 else
                 {
-                    transform = false; if (Wait < 21) { Wait = 50; }
+                    transform = false; if (cooldown == false) { Wait = 50;  } cooldown = true;
                 }
 
         }
@@ -129,7 +132,6 @@ namespace Dodge_Example
         {
             lives = int.Parse(txtLives.Text);// pass lives entered from textbox to lives variable
             MessageBox.Show("Use the left and right arrow keys to move the spaceship. \n Don't get hit by the planets! \n Every planet that gets past scores a point. \n If a planet hits a spaceship a life is lost! \n \n Enter your Name press tab and enter the number of lives \n Click Start to begin", "Game Instructions");
-            txtName.Focus();
 
         }
 
@@ -226,6 +228,20 @@ namespace Dodge_Example
                 }
             }
             
+            if(Wait == 0)
+            {
+                cooldown = false;
+            }
+
+            if (Wait > 20)
+            {
+                cooldown = true;
+            }
+
+            if(cooldown == true)
+            {
+                transform = false;
+            }
 }
 
         private void TmrPlanet_Tick(object sender, EventArgs e)
