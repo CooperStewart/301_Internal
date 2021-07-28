@@ -72,7 +72,9 @@ namespace Dodge_Example
             if (transform == false)
             {
                 if (e.KeyData == Keys.Left) { left = true; }
+                if (e.KeyData == Keys.A) { left = true; }
                 if (e.KeyData == Keys.Right) { right = true; }
+                if (e.KeyData == Keys.D) { right = true; }
             }
             if (e.KeyData == Keys.Space) if (Wait<20)
                 {
@@ -83,7 +85,7 @@ namespace Dodge_Example
                 }
                 else
                 {
-                    transform = false; if (cooldown == false) { Wait = 50;  } cooldown = true;
+                    transform = false; if (cooldown == false) { Wait +=30;  } cooldown = true;
                 }
 
         }
@@ -91,8 +93,10 @@ namespace Dodge_Example
         private void FrmDodge_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.KeyData == Keys.Left) { left = false; }
+            if (e.KeyData == Keys.A) { left = false; }
             if (e.KeyData == Keys.Right) { right = false; }
-            if (e.KeyData == Keys.Space) { transform = false;  }
+            if (e.KeyData == Keys.D) { right = false; }
+            if (e.KeyData == Keys.Space) { transform = false; if (cooldown == false) { Wait += 30; } cooldown = true; }
 
 
         }
@@ -100,7 +104,6 @@ namespace Dodge_Example
         private void TmrShip_Tick(object sender, EventArgs e)
         {
             Invalidate();
-            label5.Text = Wait.ToString();
             if (right) // if right arrow key pressed
             {
                 move = "right";
@@ -139,7 +142,7 @@ namespace Dodge_Example
         {
             score = 0;
             lblScore.Text = score.ToString();
-            lives = int.Parse(txtLives.Text);// pass lives entered from textbox to lives variable
+            lives = 5;
             TmrPlanet.Enabled = true;
             TmrShip.Enabled = true;
 
@@ -153,6 +156,11 @@ namespace Dodge_Example
         }
 
         private void MnuStart_MouseMove(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void lblScore_Click(object sender, EventArgs e)
         {
 
         }
@@ -246,7 +254,18 @@ namespace Dodge_Example
 
         private void TmrPlanet_Tick(object sender, EventArgs e)
         {
-            
+
+            if (cooldown == false)
+            {
+                TransformBar.Width = 32 * Wait;
+            }
+            else
+            {
+                TransformBar.Width = 13 * Wait;
+            }
+
+            Energy.Width = 631 - TransformBar.Width
+
            // score = 0;
             for (int i = 0; i < 4; i++)
             {

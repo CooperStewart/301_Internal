@@ -20,7 +20,7 @@ namespace Dodge_Example
         public Spaceship()
         {
             x = 10;
-            y = 330;
+            y = 300;
             width = 100;
             height = 130;
             spaceship = Properties.Resources.Galvatron;
@@ -46,7 +46,7 @@ namespace Dodge_Example
                 }
                 else
                 {
-                    x += 5;
+                    x += 10;
                    // spaceRec.Location = new Point(x, y);
                 }
 
@@ -62,7 +62,7 @@ namespace Dodge_Example
                 }
                 else
                 {
-                    x -= 5;
+                    x -= 10;
                     //spaceRec.Location = new Point(x, y);
                 }
 
