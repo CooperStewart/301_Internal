@@ -61,8 +61,8 @@ namespace Dodge_Example
                 planet[i].DrawPlanet(g);
 
             }
-            spaceship.DrawSpaceship(g);
             crosshair.drawSpaceship(g);
+            spaceship.DrawSpaceship(g);
 
 
         }
@@ -103,7 +103,9 @@ namespace Dodge_Example
 
         private void TmrShip_Tick(object sender, EventArgs e)
         {
+
             Invalidate();
+
             if (right) // if right arrow key pressed
             {
                 move = "right";
@@ -172,13 +174,14 @@ namespace Dodge_Example
 
         private void PnlGame_MouseMove(object sender, MouseEventArgs e)
         {
+            spaceship.RotateSpaceship(e.X, e.Y);
+
             crosshair.moveSpaceship(e.X, e.Y);
             for (int i = 0; i < 4; i++)
             {
                 ball[i].MoveBall(e.X, e.Y);
             }
             
-
         }
 
         private void PnlGame_MouseClick(object sender, MouseEventArgs e)
@@ -264,16 +267,16 @@ namespace Dodge_Example
                 TransformBar.Width = 13 * Wait;
             }
 
-            Energy.Width = 631 - TransformBar.Width
+           
 
-           // score = 0;
+            // score = 0;
             for (int i = 0; i < 4; i++)
             {
                 planet[i].MovePlanet();
                 planet[i].height = 2*planet[i].y/5 +20;
                 planet[i].width = 3* planet[i].y/5 +30;
                 int rndmy = ypos.Next(0,200);
-
+                label1.Text = spaceship.rotationAngle.ToString();
 
                 if (ball[i].y > 100)
                 {

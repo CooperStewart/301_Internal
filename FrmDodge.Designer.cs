@@ -36,13 +36,15 @@
             this.MnuStop = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.Energy = new System.Windows.Forms.Panel();
-            this.PnlGame = new System.Windows.Forms.Panel();
             this.TransformBar = new System.Windows.Forms.Panel();
+            this.PnlGame = new System.Windows.Forms.Panel();
             this.txtLives = new System.Windows.Forms.Label();
             this.lblScore = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
+            this.Energy.SuspendLayout();
             this.PnlGame.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -91,16 +93,25 @@
             this.Energy.BackColor = System.Drawing.Color.Lime;
             this.Energy.BackgroundImage = global::Dodge_Example.Properties.Resources._1;
             this.Energy.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.Energy.Controls.Add(this.TransformBar);
             this.Energy.Location = new System.Drawing.Point(3, 430);
             this.Energy.Name = "Energy";
             this.Energy.Size = new System.Drawing.Size(631, 28);
             this.Energy.TabIndex = 8;
             // 
+            // TransformBar
+            // 
+            this.TransformBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.TransformBar.Location = new System.Drawing.Point(0, 0);
+            this.TransformBar.Name = "TransformBar";
+            this.TransformBar.Size = new System.Drawing.Size(631, 28);
+            this.TransformBar.TabIndex = 9;
+            // 
             // PnlGame
             // 
             this.PnlGame.BackColor = System.Drawing.Color.Silver;
             this.PnlGame.BackgroundImage = global::Dodge_Example.Properties.Resources.cybertron;
-            this.PnlGame.Controls.Add(this.TransformBar);
+            this.PnlGame.Controls.Add(this.label1);
             this.PnlGame.Controls.Add(this.txtLives);
             this.PnlGame.Controls.Add(this.lblScore);
             this.PnlGame.Controls.Add(this.label3);
@@ -112,14 +123,6 @@
             this.PnlGame.Paint += new System.Windows.Forms.PaintEventHandler(this.PnlGame_Paint);
             this.PnlGame.MouseClick += new System.Windows.Forms.MouseEventHandler(this.PnlGame_MouseClick);
             this.PnlGame.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PnlGame_MouseMove);
-            // 
-            // TransformBar
-            // 
-            this.TransformBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.TransformBar.Location = new System.Drawing.Point(0, 430);
-            this.TransformBar.Name = "TransformBar";
-            this.TransformBar.Size = new System.Drawing.Size(631, 28);
-            this.TransformBar.TabIndex = 9;
             // 
             // txtLives
             // 
@@ -158,13 +161,22 @@
             this.label2.TabIndex = 2;
             this.label2.Text = "Lives";
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(309, 223);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(13, 13);
+            this.label1.TabIndex = 9;
+            this.label1.Text = "0";
+            // 
             // FrmDodge
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(634, 461);
-            this.Controls.Add(this.Energy);
             this.Controls.Add(this.menuStrip1);
+            this.Controls.Add(this.Energy);
             this.Controls.Add(this.PnlGame);
             this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip1;
@@ -177,6 +189,7 @@
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.FrmDodge_MouseMove);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.Energy.ResumeLayout(false);
             this.PnlGame.ResumeLayout(false);
             this.PnlGame.PerformLayout();
             this.ResumeLayout(false);
@@ -199,6 +212,7 @@
         private System.Windows.Forms.Panel Energy;
         private System.Windows.Forms.Label txtLives;
         private System.Windows.Forms.Panel TransformBar;
+        private System.Windows.Forms.Label label1;
     }
 }
 
