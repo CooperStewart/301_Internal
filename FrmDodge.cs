@@ -14,13 +14,14 @@ namespace Dodge_Example
     public partial class FrmDodge : Form
     {
         Graphics g; //declare a graphics object called g
-        // declare space for an array of 7 objects called planet 
-        Planet[] planet = new Planet[4];
+        // declare space for an array of 7 objects called Car 
+        Car[] Car = new Car[4];
         ball[] ball = new ball[4];
         Random yspeed = new Random();
         Random ypos = new Random();
-        Spaceship spaceship = new Spaceship();
+        Player Player = new Player();
         Crosshair crosshair = new Crosshair();
+        Arm arm = new Arm();
 
         bool left, right, transform, cooldown;
         string move;
@@ -30,8 +31,8 @@ namespace Dodge_Example
             InitializeComponent();
             for (int i = 0; i < 4; i++)
             {
-                int x = 10 + (i * 130);
-                planet[i] = new Planet(x);
+                int x = 10 + (i * 170);
+                Car[i] = new Car(x);
                 ball[i] = new ball(x);
 
             }
@@ -46,23 +47,27 @@ namespace Dodge_Example
         {
             //get the graphics used to paint on the panel control
             g = e.Graphics;
-            //call the Planet class's DrawPlanet method to draw the image planet1 
+            //call the Car class's DrawCar method to draw the image Car1 
             for (int i = 0; i < 4; i++)
             {
                 // generate a random number from 5 to 20 and put it in rndmspeed
                 int rndmspeed = yspeed.Next(1, 3)+score/20;
-                planet[i].y += rndmspeed;
+                Car[i].y += rndmspeed;
                 ball[i].y += rndmspeed;
 
 
 
-                //call the Planet class's drawPlanet method to draw the images
+                //call the Car class's drawCar method to draw the images
                 ball[i].DrawBall(g);
-                planet[i].DrawPlanet(g);
+                Car[i].DrawCar(g);
 
             }
-            crosshair.drawSpaceship(g);
-            spaceship.DrawSpaceship(g);
+            crosshair.drawCrosshair(g);
+            Player.DrawPlayer(g);
+            if (transform == false)
+            {
+                arm.DrawArm(g);
+            }
 
 
         }
@@ -109,18 +114,20 @@ namespace Dodge_Example
             if (right) // if right arrow key pressed
             {
                 move = "right";
-                spaceship.MoveSpaceship(move);
+                Player.MovePlayer(move);
+                arm.MoveArm(move);
             }
             if (left) // if left arrow key pressed
             {
                 move = "left";
-                spaceship.MoveSpaceship(move);
+                Player.MovePlayer(move);
+                arm.MoveArm(move);
             }
             if (transform) // if left arrow key pressed
             {
                
                     move = "transform";
-                    spaceship.MoveSpaceship(move);
+                    Player.MovePlayer(move);
                     right = false;
                     left = false;
                 
@@ -129,14 +136,14 @@ namespace Dodge_Example
             else
             {
                 move = "transform2";
-                spaceship.MoveSpaceship(move);
+                Player.MovePlayer(move);
             }
         }
 
         private void FrmDodge_Load(object sender, EventArgs e)
         {
             lives = int.Parse(txtLives.Text);// pass lives entered from textbox to lives variable
-            MessageBox.Show("Use the left and right arrow keys to move the spaceship. \n Don't get hit by the planets! \n Every planet that gets past scores a point. \n If a planet hits a spaceship a life is lost! \n \n Enter your Name press tab and enter the number of lives \n Click Start to begin", "Game Instructions");
+            MessageBox.Show("Use the left and right arrow keys to move the Player. \n Don't get hit by the Cars! \n Every Car that gets past scores a point. \n If a Car hits a Player a life is lost! \n \n Enter your Name press tab and enter the number of lives \n Click Start to begin", "Game Instructions");
 
         }
 
@@ -145,7 +152,7 @@ namespace Dodge_Example
             score = 0;
             lblScore.Text = score.ToString();
             lives = 5;
-            TmrPlanet.Enabled = true;
+            TmrCar.Enabled = true;
             TmrShip.Enabled = true;
 
         }
@@ -153,7 +160,7 @@ namespace Dodge_Example
         private void MnuStop_Click(object sender, EventArgs e)
         {
             TmrShip.Enabled = false;
-            TmrPlanet.Enabled = false;
+            TmrCar.Enabled = false;
 
         }
 
@@ -167,6 +174,94 @@ namespace Dodge_Example
 
         }
 
+        private void label4_Click(object sender, EventArgs e)
+        {
+            score = 0;
+            lblScore.Text = score.ToString();
+            lives = 5;
+            TmrCar.Enabled = true;
+            TmrShip.Enabled = true;
+            label4.Visible = false;
+            pictureBox1.Visible = false;
+            textBox1.Visible = false;
+        }
+
+        private void TmrCar_Tick(object sender, EventArgs e)
+        {
+            if (cooldown == false)
+            {
+                TransformBar.Width = 32 * Wait;
+            }
+            else
+            {
+                TransformBar.Width = 13 * Wait;
+            }
+
+
+
+            // score = 0;
+            for (int i = 0; i < 4; i++)
+            {
+                Car[i].MoveCar();
+                Car[i].height = 2 * Car[i].y / 5 + 20;
+                Car[i].width = 3 * Car[i].y / 5 + 30;
+                int rndmy = ypos.Next(0, 200);
+
+                if (ball[i].y > 100)
+                {
+                    if (ball[i].y < 250)
+                    {
+                        ball[i].x += (Player.spaceRec.X - ball[i].x + 20) / 20;
+                    }
+                    else
+                    {
+                        ball[i].x += (Player.spaceRec.X - ball[i].x + 20) / 25;
+                    }
+                    ball[i].y += 5;
+                }
+                else
+                {
+                    ball[i].x = Car[i].x + 10;
+                    ball[i].y = Car[i].y;
+                }
+
+                if (Player.spaceRec.IntersectsWith(ball[i].ballRec))
+                {
+
+                    //reset Car[i] back to top of panel
+                    ball[i].y = 30; // set  y value of CarRec
+                    lives -= 1;// lose a life
+                    txtLives.Text = lives.ToString();// display number of lives
+                    CheckLives();
+
+                }
+                //if a Car reaches the bottom of the Game Area reposition it at the top
+                if (Car[i].y >= PnlGame.Height)
+                {
+                    //reset Car[i] back to top of panel
+                    Car[i].y = 30; // set  y value of CarRec
+                    lives -= 1;// lose a life
+                    txtLives.Text = lives.ToString();// display number of lives
+                    CheckLives();
+
+
+                }
+                if (ball[i].y >= PnlGame.Height)
+                {
+                    //reset Car[i] back to top of panel
+                    ball[i].y = Car[i].y; // set  y value of CarRec
+
+
+
+                }
+                // score += Car[i].score;// get score from Car class (in moveCar method)
+                //lblScore.Text = score.ToString();// display score
+
+            }
+
+            PnlGame.Invalidate();//makes the paint event fire to redraw the panel
+        }
+
         private void FrmDodge_MouseMove(object sender, MouseEventArgs e)
         {
 
@@ -174,9 +269,9 @@ namespace Dodge_Example
 
         private void PnlGame_MouseMove(object sender, MouseEventArgs e)
         {
-            spaceship.RotateSpaceship(e.X, e.Y);
+            arm.RotateArm(e.X, e.Y);
 
-            crosshair.moveSpaceship(e.X, e.Y);
+            crosshair.moveCrosshair(e.X, e.Y);
             for (int i = 0; i < 4; i++)
             {
                 ball[i].MoveBall(e.X, e.Y);
@@ -190,37 +285,37 @@ namespace Dodge_Example
 
             for (int i = 0; i < 4; i++)
             {
-                if (crosshair.spaceRec.IntersectsWith(planet[i].planetRec))
+                if (crosshair.spaceRec.IntersectsWith(Car[i].CarRec))
                 {
                     if (transform == false)
                     {
                         score += 1;
                         lblScore.Text = score.ToString();
-                        planet[i].y = rndmypos;
-                        planet[i].height = 20;
-                        planet[i].width = 20;
+                        Car[i].y = rndmypos;
+                        Car[i].height = 20;
+                        Car[i].width = 20;
                     }
                     else
                     {
                         score += 3;
                         lblScore.Text = score.ToString();
-                        planet[i].y = rndmypos;
-                        planet[i].height = 20;
-                        planet[i].width = 20;
-                        if (crosshair.spaceRec.IntersectsWith(planet[0].planetRec))
+                        Car[i].y = rndmypos;
+                        Car[i].height = 20;
+                        Car[i].width = 20;
+                        if (crosshair.spaceRec.IntersectsWith(Car[0].CarRec))
                         { }
                         else
                         {
-                            planet[i - 1].y = rndmypos;
-                            planet[i - 1].height = 20;
-                            planet[i - 1].width = 20;
+                            Car[i - 1].y = rndmypos;
+                            Car[i - 1].height = 20;
+                            Car[i - 1].width = 20;
                         }
-                        if (crosshair.spaceRec.IntersectsWith(planet[3].planetRec))
+                        if (crosshair.spaceRec.IntersectsWith(Car[3].CarRec))
                         { }
                         else { 
-                            planet[i + 1].y = rndmypos;
-                            planet[i + 1].height = 20;
-                            planet[i + 1].width = 20;
+                            Car[i + 1].y = rndmypos;
+                            Car[i + 1].height = 20;
+                            Car[i + 1].width = 20;
                         }
                     }
 
@@ -258,88 +353,21 @@ namespace Dodge_Example
         private void TmrPlanet_Tick(object sender, EventArgs e)
         {
 
-            if (cooldown == false)
-            {
-                TransformBar.Width = 32 * Wait;
-            }
-            else
-            {
-                TransformBar.Width = 13 * Wait;
-            }
-
            
-
-            // score = 0;
-            for (int i = 0; i < 4; i++)
-            {
-                planet[i].MovePlanet();
-                planet[i].height = 2*planet[i].y/5 +20;
-                planet[i].width = 3* planet[i].y/5 +30;
-                int rndmy = ypos.Next(0,200);
-                label1.Text = spaceship.rotationAngle.ToString();
-
-                if (ball[i].y > 100)
-                {
-                    if (ball[i].y < 250)
-                    {
-                        ball[i].x += (spaceship.spaceRec.X - ball[i].x + 20) / 20;
-                    }
-                    else
-                    {
-                        ball[i].x += (spaceship.spaceRec.X - ball[i].x + 20) / 25;
-                    }
-                    ball[i].y += 5;
-                }
-                else
-                {
-                    ball[i].x = planet[i].x + 10;
-                    ball[i].y = planet[i].y;
-                }
-
-                if (spaceship.spaceRec.IntersectsWith(ball[i].ballRec))
-                {
-
-                    //reset planet[i] back to top of panel
-                    ball[i].y = 30; // set  y value of planetRec
-                    lives -= 1;// lose a life
-                    txtLives.Text = lives.ToString();// display number of lives
-                    CheckLives();
-
-                }
-                //if a planet reaches the bottom of the Game Area reposition it at the top
-                if (planet[i].y >= PnlGame.Height)
-                {
-                    //reset planet[i] back to top of panel
-                planet[i].y = 30; // set  y value of planetRec
-                lives -= 1;// lose a life
-                txtLives.Text = lives.ToString();// display number of lives
-                CheckLives();
-
-
-                }
-                if (ball[i].y >= PnlGame.Height)
-                {
-                    //reset planet[i] back to top of panel
-                    ball[i].y = planet[i].y; // set  y value of planetRec
-                   
-
-
-                }
-                // score += planet[i].score;// get score from Planet class (in movePlanet method)
-                //lblScore.Text = score.ToString();// display score
-
-            }
-
-            PnlGame.Invalidate();//makes the paint event fire to redraw the panel
         }
         private void CheckLives()
         {
             if (lives == 0)
             {
-                TmrPlanet.Enabled = false;
+                TmrCar.Enabled = false;
                 TmrShip.Enabled = false;
                 MessageBox.Show("Game Over");
-
+                label4.Text = score.ToString();
+                pictureBox1.Visible = true;
+                label4.Visible = true;
+                Energy.Visible = false;
+                label1.Visible = true;
+                label1.Text = "Cooper";
             }
         }
 

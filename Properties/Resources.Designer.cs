@@ -83,6 +83,16 @@ namespace Dodge_Example.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Arm {
+            get {
+                object obj = ResourceManager.GetObject("Arm", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap ball {
             get {
                 object obj = ResourceManager.GetObject("ball", resourceCulture);
@@ -96,6 +106,16 @@ namespace Dodge_Example.Properties {
         internal static System.Drawing.Bitmap cannon {
             get {
                 object obj = ResourceManager.GetObject("cannon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Car {
+            get {
+                object obj = ResourceManager.GetObject("Car", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -146,6 +166,16 @@ namespace Dodge_Example.Properties {
         internal static System.Drawing.Bitmap planet1 {
             get {
                 object obj = ResourceManager.GetObject("planet1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Player {
+            get {
+                object obj = ResourceManager.GetObject("Player", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

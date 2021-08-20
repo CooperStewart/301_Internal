@@ -13,7 +13,7 @@ namespace Dodge_Example
         // declare fields to use in the class
 
         public int x, y, width, height;//variables for the rectangle
-        public Image spaceship;//variable for the planet's image
+        public Image crosshair;//variable for the planet's image
 
         public Rectangle spaceRec;//variable for a rectangle to place our image in
 
@@ -24,16 +24,16 @@ namespace Dodge_Example
             y = 360;
             width = 40;
             height = 40;
-            spaceship = Properties.Resources.crosshair;
+            crosshair = Properties.Resources.crosshair;
             spaceRec = new Rectangle(x, y, width, height);
         }
         //methods
-        public void drawSpaceship(Graphics g)
+        public void drawCrosshair(Graphics g)
         {
-            g.DrawImage(spaceship, spaceRec);
+            g.DrawImage(crosshair, spaceRec);
         }
 
-        public void moveSpaceship(int mouseX, int mouseY)
+        public void moveCrosshair(int mouseX, int mouseY)
         {
             spaceRec.X = mouseX - (spaceRec.Width / 2);
             spaceRec.Y = mouseY - (spaceRec.Height / 2);
